@@ -15,7 +15,6 @@ Pod::Spec.new do |s|
 
   s.source_files          = 'SwiftBleRpcLibrary/SwiftBleRpc/**/*.swift'
   s.dependency 'RxBluetoothKit'
-  s.dependency 'SwiftGRPC'
   s.dependency 'CryptoSwift'
 
   s.swift_version = '5.0'
