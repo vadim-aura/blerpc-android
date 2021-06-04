@@ -68,8 +68,11 @@ public class MessageGenerator {
         FieldContext fieldContext = new FieldContext();
         fieldContext.name = field.getJsonName().replace(PROTO_ID_NAME, SWIFT_ID_NAME); // to conform output swift rules
         fieldContext.type = field.getType().toString();
-        fieldContext.protoType = field.getTypeName().replace(protoFile.getPackage(), "")
-                .replace(".", "");
+        String protoTypePath = field.getTypeName().replace(protoFile.getPackage(), "").replace(".", "_");
+        fieldContext.protoType = String.join("_", Arrays.stream(protoTypePath.split("_"))
+                .filter(item -> !item.isEmpty())
+                .map(Common::upperCaseFirstLetter)
+                .toArray(String[]::new));
         fieldContext.isEnum = fieldContext.type.equals(TYPE_ENUM);
         fieldContext.isProtoObject = fieldContext.type.equals(TYPE_MESSAGE);
         fieldContext.isPrimitiveType = !fieldContext.isEnum && !fieldContext.isProtoObject;
