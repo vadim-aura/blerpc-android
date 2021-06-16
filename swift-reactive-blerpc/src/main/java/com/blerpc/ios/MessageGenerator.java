@@ -11,6 +11,7 @@ import com.google.protobuf.DescriptorProtos.FileDescriptorProto;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 import java.util.stream.Stream;
+import java.util.Arrays;
 
 /** Generator which generates message encoding/decoding Swift extensions. */
 public class MessageGenerator {
@@ -68,8 +69,11 @@ public class MessageGenerator {
         FieldContext fieldContext = new FieldContext();
         fieldContext.name = field.getJsonName().replace(PROTO_ID_NAME, SWIFT_ID_NAME); // to conform output swift rules
         fieldContext.type = field.getType().toString();
-        fieldContext.protoType = field.getTypeName().replace(protoFile.getPackage(), "")
-                .replace(".", "");
+        String protoTypePath = field.getTypeName().replace(protoFile.getPackage(), "");
+        fieldContext.protoType = String.join("_", Arrays.stream(protoTypePath.split("\\."))
+                .filter(item -> !item.isEmpty())
+                .map(Common::upperCaseFirstLetter)
+                .toArray(String[]::new));
         fieldContext.isEnum = fieldContext.type.equals(TYPE_ENUM);
         fieldContext.isProtoObject = fieldContext.type.equals(TYPE_MESSAGE);
         fieldContext.isPrimitiveType = !fieldContext.isEnum && !fieldContext.isProtoObject;

@@ -57,8 +57,8 @@ public class ProtoDecoder {
     /// - parameter fromByte: starting byte.
     /// - parameter data: data from which need to convert.
     /// - returns: converted value Int32.
-    private class func decodeInt32(fromByte: Int, data: Data) -> Int32 {
-        return data.subdata(in: fromByte..<fromByte + 4).bytes.withUnsafeBufferPointer { pointer in
+    private class func decodeInt32(fromByte: Int, toByte: Int, data: Data) -> Int32 {
+        return data.subdata(in: fromByte..<toByte).bytes.withUnsafeBufferPointer { pointer in
             (
                 pointer.baseAddress!.withMemoryRebound(to: Int32.self, capacity: 1) { pointer in
                     pointer
@@ -94,8 +94,8 @@ public class ProtoDecoder {
                 return Int32(ProtoDecoder.decodeUInt8(fromByte: from, data: data))
             } else if to - from == 2 {
                 return Int32(ProtoDecoder.decodeInt16(fromByte: from, data: data))
-            } else if to - from == 4 {
-                return Int32(ProtoDecoder.decodeInt32(fromByte: from, data: data))
+            } else if [3, 4].contains(to - from) {
+                return Int32(ProtoDecoder.decodeInt32(fromByte: from, toByte: to, data: data))
             } else {
                 throw ProtoParserErrors.wrongData
             }
