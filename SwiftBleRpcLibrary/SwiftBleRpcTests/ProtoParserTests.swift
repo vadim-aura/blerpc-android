@@ -20,6 +20,11 @@ class ProtoParserTests: XCTestCase {
         expect(decoded).to(equal(-422296197))
     }
 
+    func testDecodeInt3Bytes() throws {
+        let decoded = try ProtoDecoder.decode(data: Data.init(hex: "AA7B4511"), from: 1, to: 4, type: .int32) as? Int32
+        expect(decoded).to(equal(286344571))
+    }
+
     func testDecodeIntMoreThan4BytesFails() throws {
         expect { try ProtoDecoder.decode(data: Data.init(hex: "AA7B45D4E6AA"), from: 0, to: 5, type: .int32) as? Int32 }.to(throwError(ProtoParserErrors.wrongData))
     }
