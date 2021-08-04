@@ -75,8 +75,9 @@ public class MessageGenerator {
                 .map(Common::upperCaseFirstLetter)
                 .toArray(String[]::new));
         fieldContext.isEnum = fieldContext.type.equals(TYPE_ENUM);
-        fieldContext.isProtoObject = fieldContext.type.equals(TYPE_MESSAGE);
-        fieldContext.isPrimitiveType = !fieldContext.isEnum && !fieldContext.isProtoObject;
+        fieldContext.isProtoObjectDifferentPackage = fieldContext.type.equals(TYPE_MESSAGE) && !field.getTypeName().contains(protoFile.getPackage());
+        fieldContext.isProtoObject = fieldContext.type.equals(TYPE_MESSAGE) && !fieldContext.isProtoObjectDifferentPackage;
+        fieldContext.isPrimitiveType = !fieldContext.isEnum && !fieldContext.isProtoObject && !fieldContext.isProtoObjectDifferentPackage;
 
         switch (fieldContext.type) {
             case TYPE_ENUM:
@@ -123,6 +124,7 @@ public class MessageGenerator {
         public int fromByte;
         public boolean isEnum;
         public boolean isProtoObject;
+        public boolean isProtoObjectDifferentPackage;
         public boolean isPrimitiveType;
     }
 }
