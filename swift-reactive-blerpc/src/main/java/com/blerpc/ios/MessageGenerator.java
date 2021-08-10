@@ -13,9 +13,7 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 import java.util.stream.Stream;
 import java.util.Arrays;
 
-/**
- * Generator which generates message encoding/decoding Swift extensions.
- */
+/** Generator which generates message encoding/decoding Swift extensions. */
 public class MessageGenerator {
 
     private static final String OUTPUT_CLASS_POSTFIX = "Extension";
@@ -34,7 +32,6 @@ public class MessageGenerator {
 
     /**
      * Builds message contexts based on input proto file request.
-     *
      * @param request - input request (usually as input proto file).
      * @return prepared service contexts parsed from input proto request.
      */
@@ -54,7 +51,7 @@ public class MessageGenerator {
     }
 
     private MessageContext generateMessageInformation(DescriptorProto messageType,
-                                                      FileDescriptorProto protoFile) {
+                                                              FileDescriptorProto protoFile) {
         MessageContext messageContext = new MessageContext();
         messageContext.swiftPackageName = Common.extractSwiftPackageName(protoFile);
         messageContext.packageName = Common.extractPackageName(protoFile);
@@ -68,7 +65,7 @@ public class MessageGenerator {
     }
 
     private FieldContext generateFieldsInformation(FieldDescriptorProto field,
-                                                   FileDescriptorProto protoFile) {
+                                                      FileDescriptorProto protoFile) {
         FieldContext fieldContext = new FieldContext();
         fieldContext.name = field.getJsonName().replace(PROTO_ID_NAME, SWIFT_ID_NAME); // to conform output swift rules
         fieldContext.type = field.getType().toString();
@@ -88,10 +85,10 @@ public class MessageGenerator {
             case PROTO_TYPE_INT32:
                 fieldContext.swiftType = SWIFT_TYPE_INT32;
                 break;
-            case PROTO_TYPE_BYTES:
+            case  PROTO_TYPE_BYTES:
                 fieldContext.swiftType = SWIFT_TYPE_BYTES;
                 break;
-            case PROTO_TYPE_BOOL:
+            case  PROTO_TYPE_BOOL:
                 fieldContext.swiftType = SWIFT_TYPE_BOOL;
                 break;
             default:
@@ -104,9 +101,7 @@ public class MessageGenerator {
         return fieldContext;
     }
 
-    /**
-     * Template class that describe protobuf message.
-     */
+    /** Template class that describe protobuf message. */
     @SuppressWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD")
     @VisibleForTesting
     public static class MessageContext {
@@ -118,9 +113,7 @@ public class MessageGenerator {
         public ImmutableList<FieldContext> fields = ImmutableList.of();
     }
 
-    /**
-     * Template class that describe protobuf method's fields.
-     */
+    /** Template class that describe protobuf method's fields. */
     @SuppressWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD")
     @VisibleForTesting
     public static class FieldContext {

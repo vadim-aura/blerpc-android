@@ -1,6 +1,5 @@
 import Foundation
 import SwiftBleRpcLibrary
-import AURACommonProto
 
 /// Extension for Device_SetValueRequest which adds encode to Data and decode from Data methods.
 extension Device_SetValueRequest {
