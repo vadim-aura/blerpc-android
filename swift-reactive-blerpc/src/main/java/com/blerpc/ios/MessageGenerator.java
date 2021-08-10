@@ -76,7 +76,7 @@ public class MessageGenerator {
                 .toArray(String[]::new));
         fieldContext.isEnum = fieldContext.type.equals(TYPE_ENUM);
         boolean isTypeMessage = fieldContext.type.equals(TYPE_MESSAGE);
-        fieldContext.isExternalProtoObject = isTypeMessage && !field.getTypeName().contains(protoFile.getPackage());
+        fieldContext.isExternalProtoObject = isTypeMessage && !field.getTypeName().startsWith("."+protoFile.getPackage());
         fieldContext.isProtoObject = isTypeMessage && !fieldContext.isExternalProtoObject;
         fieldContext.isPrimitiveType = !fieldContext.isEnum && !fieldContext.isProtoObject && !fieldContext.isExternalProtoObject;
 
