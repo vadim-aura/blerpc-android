@@ -3,10 +3,13 @@ package com.blerpc.ios;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import com.google.protobuf.DescriptorProtos.FileDescriptorProto;
+
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-/** Helpers for generator. */
+/**
+ * Helpers for generator.
+ */
 public class Common {
 
     private static final String SWIFT_PACKAGE_TO_CLASS_SAPARATOR = "_";
@@ -14,6 +17,7 @@ public class Common {
 
     /**
      * Checks if proto file has package or not.
+     *
      * @param file - input proto file.
      * @return boolean indicating if proto file has package or not.
      */
@@ -23,6 +27,7 @@ public class Common {
 
     /**
      * Extracts package name from proto file.
+     *
      * @param proto - input proto file.
      * @return extracted package name as string.
      */
@@ -33,6 +38,7 @@ public class Common {
 
     /**
      * Extracts package name from proto file and make it Swift format.
+     *
      * @param proto - input proto file.
      * @return extracted package name as string and formatted for Swift.
      */
@@ -46,6 +52,7 @@ public class Common {
 
     /**
      * Uppercase first letter.
+     *
      * @param string - input string which need to be uppercased.
      * @return uppercased string.
      */
@@ -58,6 +65,7 @@ public class Common {
 
     /**
      * Lowercase first letter.
+     *
      * @param string - input string which need to be lowercased.
      * @return lowercased string.
      */
@@ -71,8 +79,9 @@ public class Common {
 
     /**
      * Generates class type in Swift format.
+     *
      * @param protoFile - proto file for template generation.
-     * @param type - type which need to convert in Swift type.
+     * @param type      - type which need to convert in Swift type.
      * @return string which represents proto type in Swift format.
      */
     static String generateSwiftProtoType(FileDescriptorProto protoFile, String type) {
@@ -82,6 +91,7 @@ public class Common {
 
     /**
      * Check if input request is empty and if not - throws error. Used for Read/Subscribe methods where requests must be empty.
+     *
      * @param protoFile - proto file for template generation.
      * @param inputType - request type.
      */
