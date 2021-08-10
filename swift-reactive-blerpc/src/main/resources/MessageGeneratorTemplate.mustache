@@ -24,6 +24,9 @@ extension {{swiftPackageName}}{{messageName}} {
         {{#isProtoObject}}
             proto.{{name}} = try {{swiftPackageName}}{{protoType}}.bleRpcDecode(data: data.subdata(in: {{fromByte}}..<min({{toByte}}, data.count)))
         {{/isProtoObject}}
+        {{#isExternalProtoObject}}
+            proto.{{name}} = try {{protoType}}.bleRpcDecode(data: data.subdata(in: {{fromByte}}..<min({{toByte}}, data.count)))
+        {{/isExternalProtoObject}}
         }
 {{/fields}}
         return proto
@@ -41,6 +44,9 @@ extension {{swiftPackageName}}{{messageName}} {
     {{#isProtoObject}}
         data.append(try {{swiftPackageName}}{{protoType}}.bleRpcEncode(proto: proto.{{name}}))
     {{/isProtoObject}}
+    {{#isExternalProtoObject}}
+        data.append(try {{protoType}}.bleRpcEncode(proto: proto.{{name}}))
+    {{/isExternalProtoObject}}
     {{#isPrimitiveType}}
         data.append(try SwiftBleRpcLibrary.ProtoEncoder.encode(object: proto.{{name}}, from: {{fromByte}}, to: {{toByte}}, type: {{swiftType}}))
     {{/isPrimitiveType}}
