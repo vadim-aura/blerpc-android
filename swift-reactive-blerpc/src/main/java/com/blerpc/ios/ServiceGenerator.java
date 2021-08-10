@@ -13,11 +13,15 @@ import com.google.protobuf.DescriptorProtos.MethodDescriptorProto;
 import com.google.protobuf.DescriptorProtos.ServiceDescriptorProto;
 import com.google.protobuf.DescriptorProtos.SourceCodeInfo.Location;
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest;
+
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
 import java.util.AbstractMap;
 import java.util.stream.Stream;
 
-/** Generator which generates services for Rpc methods. */
+/**
+ * Generator which generates services for Rpc methods.
+ */
 public class ServiceGenerator {
 
     private static final int METHOD_NUMBER_OF_PATHS = 4;
@@ -29,6 +33,7 @@ public class ServiceGenerator {
 
     /**
      * Builds service contexts based on input proto file request.
+     *
      * @param request input request (usually as input proto file).
      * @return prepared service contexts parsed from input proto request.
      */
@@ -42,9 +47,9 @@ public class ServiceGenerator {
                 .filter(this::isProtoService)
                 .filter(this::isBleRpcService)
                 .map(fileLocation ->
-                                buildServiceContext(
-                                        fileLocation.getKey(),
-                                        fileLocation.getValue()));
+                        buildServiceContext(
+                                fileLocation.getKey(),
+                                fileLocation.getValue()));
     }
 
     private ServiceContext buildServiceContext(FileDescriptorProto protoFile, Location fileLocation) {
@@ -147,7 +152,9 @@ public class ServiceGenerator {
                 && location.getPath(2) == ServiceDescriptorProto.METHOD_FIELD_NUMBER;
     }
 
-    /** Template class that describe protobuf services. */
+    /**
+     * Template class that describe protobuf services.
+     */
     @SuppressWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD")
     @VisibleForTesting
     public static class ServiceContext {
@@ -160,7 +167,9 @@ public class ServiceGenerator {
         public boolean deprecated;
     }
 
-    /** Template class that describe protobuf methods. */
+    /**
+     * Template class that describe protobuf methods.
+     */
     @SuppressWarnings("URF_UNREAD_PUBLIC_OR_PROTECTED_FIELD")
     @VisibleForTesting
     public static class MethodContext {

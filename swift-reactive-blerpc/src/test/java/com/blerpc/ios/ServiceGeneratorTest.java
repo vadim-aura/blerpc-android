@@ -8,12 +8,15 @@ import com.google.common.collect.ImmutableList;
 import com.google.protobuf.DescriptorProtos;
 import com.google.protobuf.UnknownFieldSet;
 import com.google.protobuf.compiler.PluginProtos;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** Tests for {@link ServiceGenerator}. */
+/**
+ * Tests for {@link ServiceGenerator}.
+ */
 @RunWith(JUnit4.class)
 public class ServiceGeneratorTest {
     static final String FILE_NAME = "test_service";
@@ -130,7 +133,9 @@ public class ServiceGeneratorTest {
 
     ServiceGenerator generator;
 
-    /** Set up. */
+    /**
+     * Set up.
+     */
     @Before
     public void setUp() {
         generator = new ServiceGenerator();
