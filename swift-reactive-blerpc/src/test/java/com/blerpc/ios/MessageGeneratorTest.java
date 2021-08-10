@@ -8,12 +8,15 @@ import com.google.common.collect.ImmutableList;
 import com.google.protobuf.DescriptorProtos;
 import com.google.protobuf.UnknownFieldSet;
 import com.google.protobuf.compiler.PluginProtos;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-/** Tests for {@link MessageGenerator}. */
+/**
+ * Tests for {@link MessageGenerator}.
+ */
 @RunWith(JUnit4.class)
 public class MessageGeneratorTest {
     static final String FILE_NAME = "test_service";
@@ -73,7 +76,7 @@ public class MessageGeneratorTest {
                     .addField(3, FIELD_PROTO_OBJECT)
                     .addField(4, FIELD_EXTERNAL_PROTO_OBJECT)
                     .build();
-    static final Integer COUNT_FIELDS = 5;
+    static final int COUNT_FIELDS = INPUT_MESSAGE_TYPE.getFieldCount();
     static final DescriptorProtos.DescriptorProto OUTPUT_MESSAGE_TYPE =
             DescriptorProtos.DescriptorProto.newBuilder().setName(METHOD_OUTPUT_TYPE).build();
     static final DescriptorProtos.FileOptions FILE_OPTIONS =
@@ -150,7 +153,9 @@ public class MessageGeneratorTest {
 
     MessageGenerator generator;
 
-    /** Set up. */
+    /**
+     * Set up.
+     */
     @Before
     public void setUp() {
         generator = new MessageGenerator();
