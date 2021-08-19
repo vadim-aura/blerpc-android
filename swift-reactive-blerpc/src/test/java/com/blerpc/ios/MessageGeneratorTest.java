@@ -40,6 +40,7 @@ public class MessageGeneratorTest {
     static final String SWIFT_TYPE_INT32 = "ProtoType.int32";
     private static final String SWIFT_TYPE_UNKNOWN = "ProtoType.unknown";
     static final String EXTERNAL_PACKAGE_OBJECT_TYPE = ".com.aura.ExternalObjectType";
+    static final String EXTERNAL_PACKAGE_ENUM = ".com.aura.ExternalEnum";
     static final String INTERNAL_PACKAGE_OBJECT_TYPE = ".com.test.InternalObjectType";
     static final String FILE_POSTFIX = "Extension";
     static final String FILE_EXTENSION = ".swift";
@@ -67,6 +68,10 @@ public class MessageGeneratorTest {
             .setType(DescriptorProtos.FieldDescriptorProto.Type.TYPE_MESSAGE)
             .setTypeName(EXTERNAL_PACKAGE_OBJECT_TYPE)
             .setJsonName(MESSAGE_PROTO_OBJECT_NAME).setOptions(FIELD_OPTIONS).build();
+    static final DescriptorProtos.FieldDescriptorProto FIELD_EXTERNAL_ENUM = DescriptorProtos.FieldDescriptorProto.newBuilder()
+            .setType(DescriptorProtos.FieldDescriptorProto.Type.TYPE_ENUM)
+            .setTypeName(EXTERNAL_PACKAGE_ENUM)
+            .setJsonName(MESSAGE_ENUM_NAME).setOptions(FIELD_OPTIONS).build();
     static final DescriptorProtos.DescriptorProto INPUT_MESSAGE_TYPE =
             DescriptorProtos.DescriptorProto.newBuilder()
                     .setName(METHOD_INPUT_TYPE)
@@ -75,6 +80,7 @@ public class MessageGeneratorTest {
                     .addField(2, FIELD_FLOAT)
                     .addField(3, FIELD_PROTO_OBJECT)
                     .addField(4, FIELD_EXTERNAL_PROTO_OBJECT)
+                    .addField(5, FIELD_EXTERNAL_ENUM)
                     .build();
     static final int COUNT_FIELDS = INPUT_MESSAGE_TYPE.getFieldCount();
     static final DescriptorProtos.DescriptorProto OUTPUT_MESSAGE_TYPE =
@@ -220,6 +226,18 @@ public class MessageGeneratorTest {
         MessageGenerator.FieldContext objectType = message.fields.get(4);
         assertThat(objectType.swiftType).isEqualTo(SWIFT_TYPE_UNKNOWN);
         assertThat(objectType.isExternalProtoObject).isEqualTo(true);
+    }
+
+    @Test
+    public void buildServiceContexts_ExternalEnum() throws Exception {
+        ImmutableList<MessageGenerator.MessageContext> messageList = generator.buildMessageContexts(REQUEST)
+                .collect(toImmutableList());
+        assertThat(messageList).hasSize(2);
+        MessageGenerator.MessageContext message = messageList.get(0);
+        assertThat(message.fields).hasSize(COUNT_FIELDS);
+        MessageGenerator.FieldContext objectType = message.fields.get(5);
+        assertThat(objectType.swiftType).isEqualTo(SWIFT_TYPE_INT32);
+        assertThat(objectType.isExternalEnum).isEqualTo(true);
     }
 
     private MessageGenerator.MessageContext createMessageContext() {

@@ -76,16 +76,21 @@ public class MessageGenerator {
             FileDescriptorProto protoFile
     ) {
         FieldContext fieldContext = new FieldContext();
+        String typeName = field.getTypeName();
+        String packageName = protoFile.getPackage();
+        boolean isCurrentPackage = isCurrentPackage(typeName, packageName);
         fieldContext.name = field.getJsonName().replace(PROTO_ID_NAME, SWIFT_ID_NAME); // to conform output swift rules
         fieldContext.type = field.getType().toString();
-        String protoTypePath = field.getTypeName().replace(protoFile.getPackage(), "");
+        String protoTypePath = typeName.replace(protoFile.getPackage(), "");
         fieldContext.protoType = String.join("_", Arrays.stream(protoTypePath.split("\\."))
                 .filter(item -> !item.isEmpty())
                 .map(Common::upperCaseFirstLetter)
                 .toArray(String[]::new));
-        fieldContext.isEnum = fieldContext.type.equals(TYPE_ENUM);
+        boolean isTypeEnum = fieldContext.type.equals(TYPE_ENUM);
+        fieldContext.isExternalEnum = isTypeEnum && !isCurrentPackage;
+        fieldContext.isEnum = isTypeEnum && !fieldContext.isExternalEnum;
         boolean isTypeMessage = fieldContext.type.equals(TYPE_MESSAGE);
-        fieldContext.isExternalProtoObject = isTypeMessage && !field.getTypeName().startsWith("." + protoFile.getPackage());
+        fieldContext.isExternalProtoObject = isTypeMessage && !isCurrentPackage;
         fieldContext.isProtoObject = isTypeMessage && !fieldContext.isExternalProtoObject;
         fieldContext.isPrimitiveType = !fieldContext.isEnum && !fieldContext.isProtoObject && !fieldContext.isExternalProtoObject;
 
@@ -108,6 +113,10 @@ public class MessageGenerator {
         fieldContext.toByte = field.getOptions().getExtension(Blerpc.field).getToByte();
         fieldContext.fromByte = field.getOptions().getExtension(Blerpc.field).getFromByte();
         return fieldContext;
+    }
+
+    private boolean isCurrentPackage(String typeName, String packageName) {
+        return typeName.startsWith("." + packageName);
     }
 
     /**
@@ -137,6 +146,7 @@ public class MessageGenerator {
         public int toByte;
         public int fromByte;
         public boolean isEnum;
+        public boolean isExternalEnum;
         public boolean isProtoObject;
         public boolean isExternalProtoObject;
         public boolean isPrimitiveType;
