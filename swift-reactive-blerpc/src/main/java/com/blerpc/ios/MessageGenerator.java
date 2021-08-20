@@ -92,7 +92,7 @@ public class MessageGenerator {
         boolean isTypeMessage = fieldContext.type.equals(TYPE_MESSAGE);
         fieldContext.isExternalProtoObject = isTypeMessage && !isCurrentPackage;
         fieldContext.isProtoObject = isTypeMessage && !fieldContext.isExternalProtoObject;
-        fieldContext.isPrimitiveType = !fieldContext.isEnum && !fieldContext.isProtoObject && !fieldContext.isExternalProtoObject;
+        fieldContext.isPrimitiveType = !fieldContext.isEnum && !fieldContext.isProtoObject && !fieldContext.isExternalProtoObject && !fieldContext.isExternalEnum;
 
         switch (fieldContext.type) {
             case TYPE_ENUM:
