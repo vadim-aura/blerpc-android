@@ -81,7 +81,7 @@ public class MessageGenerator {
         boolean isCurrentPackage = isCurrentPackage(typeName, packageName);
         fieldContext.name = field.getJsonName().replace(PROTO_ID_NAME, SWIFT_ID_NAME); // to conform output swift rules
         fieldContext.type = field.getType().toString();
-        String protoTypePath = typeName.replace(protoFile.getPackage(), "");
+        String protoTypePath = typeName.replace(packageName, "");
         fieldContext.protoType = String.join("_", Arrays.stream(protoTypePath.split("\\."))
                 .filter(item -> !item.isEmpty())
                 .map(Common::upperCaseFirstLetter)
